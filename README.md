@@ -52,7 +52,7 @@ To ensure that the bot has access to the most up-to-date information, you can en
 # Installation steps  🚩
 ### Step 1. 🎬 Git clone repository
 ```
-git clone https://github.com/
+git clone https://github.com/MrCargon/Athena_Owl_DiscordBot.git
 ```
 ### Step 2. 📁 Changing directory to cloned directory
 ```
