@@ -52,7 +52,7 @@ To ensure that the bot has access to the most up-to-date information, you can en
 # Installation steps  🚩
 ### Step 1. 🎬 Git clone repository
 ```
-git clone https://github.com/mishalhossin/Discord-AI-Chatbot
+git clone https://github.com/
 ```
 ### Step 2. 📁 Changing directory to cloned directory
 ```
