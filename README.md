@@ -56,7 +56,7 @@ git clone https://github.com/MrCargon/Athena_Owl_DiscordBot.git
 ```
 ### Step 2. 📁 Changing directory to cloned directory
 ```
-cd Discord-AI-Chatbot
+cd Athena_Owl_DiscordBot
 ```
 ## Step 3. 💾 Install requirements
 ```
