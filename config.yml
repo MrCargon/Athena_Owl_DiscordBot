@@ -13,7 +13,7 @@ AI_NSFW_CONTENT_FILTER: true # Enable NSFW AI detector to detect NSFW prompt on 
 
 LANGUAGE: en  # Specify the language code (check 'lang' folder for valid codes)
 
-INSTRUCTIONS: Ayhena_Owl_PB # Specify the instruction prompt to use (check 'instructions' folder for valid prompts)
+INSTRUCTIONS: butler # Specify the instruction prompt to use (check 'instructions' folder for valid prompts)
 # To add custom prompts, create a .txt file like 'custom.txt' in `instructions` folder and set INSTRUCTIONS as 'custom'
 
 Discord: https://discord.gg/xBK6gWjH
@@ -21,9 +21,8 @@ Github: https://github.com/MrCargon
 
 TRIGGER:
   - chatbot
-  - Athena_Owl
-  - athena_owl
-  - owl_assistant
+  - Owl assistant
+  - owl assistant
   - owl
   - Owl
   - assistant
@@ -35,7 +34,7 @@ DISABLE_PRESENCE: false
 PRESENCES:
   - Yo, whats good ?
   - Support at https://discord.gg/xBK6gWjH
-  - Bot
+  - Bot🤖
 # List of different presences to be used
 
 OCR_MODEL_URLS:

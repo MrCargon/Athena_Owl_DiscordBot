@@ -11,10 +11,10 @@ import discord
 import random
 import string
 from discord import Embed, app_commands
-from discord.ext import commands, tasks
+from discord.ext import commands
 from dotenv import load_dotenv
 
-from bot_utilities.ai_utils import generate_personal_message, generate_response, generate_image_prodia, poly_image_gen, generate_gpt4_response, dall_e_gen, sdxl
+from bot_utilities.ai_utils import _mentioned_user_func, generate_response, generate_image_prodia, search, poly_image_gen, generate_gpt4_response, dall_e_gen, sdxl
 from bot_utilities.response_util import split_response, translate_to_en, get_random_prompt
 from bot_utilities.discord_util import check_token, get_discord_token
 from bot_utilities.config_loader import config, load_current_language, load_instructions
@@ -90,10 +90,6 @@ async def on_ready():
     print()
     print(f"\033[1;38;5;202mAvailable models: {model_blob}\033[0m")
     print(f"\033[1;38;5;46mCurrent model: {config['GPT_MODEL']}\033[0m")
-
-    # Start the sceduler taks
-    scheduler.start()
-
     if presences_disabled:
         return
     else:
@@ -129,6 +125,8 @@ async def on_message(message):
 
     if message.mentions:
         for mention in message.mentions:
+            status = await _mentioned_user_func(message.author, f"You were mentioned by {message.author} in {message.channel}")
+            await message.channel.send(status)
             message.content = message.content.replace(f'<@{mention.id}>', f'{mention.display_name}')
 
     if message.stickers or message.author.bot or (message.reference and (message.reference.resolved.author != bot.user or message.reference.resolved.embeds)):
@@ -163,13 +161,21 @@ async def on_message(message):
         channel_id = message.channel.id
         key = f"{message.author.id}-{channel_id}"
 
-        user_input = {"id": key, "user_name": message.author.global_name, "message": message.content, "ai_name": personaname}
+        if key not in message_history:
+            message_history[key] = []
+
+        message_history[key] = message_history[key][-MAX_HISTORY:]
+            
+        search_results = await search(message.content)
+            
+        message_history[key].append({"role": "user", "content": message.content})
+        history = message_history[key]
 
         async with message.channel.typing():
-            print(user_input)
-            response = await asyncio.to_thread(generate_response, instructions=instructions, user_input=user_input)
+            response = await asyncio.to_thread(generate_response, instructions=instructions, search=search_results, history=history)
             if internet_access:
                 await message.remove_reaction("🔎", bot.user)
+        message_history[key].append({"role": "assistant", "name": personaname, "content": response})
 
         if response is not None:
             for chunk in split_response(response):
@@ -498,39 +504,7 @@ async def server(ctx):
             embed.add_field(name=guild.name, value=f"*[No invite permission]*", inline=True)
 
     await ctx.send(embed=embed, ephemeral=True)
-
-# Define the scheduler task
-@tasks.loop(hours=5)  # Run the task every minute
-async def scheduler():
-    current_time = datetime.datetime.now()
-    print(current_time, "; hour is: ", current_time.hour)
-
-    if os.path.exists("channels_scheduled_tasks.json"):
-        with open("channels_scheduled_tasks.json", "r", encoding='utf-8') as f:
-            scheduled_channels = json.load(f)["git-report"]
-
-            print(scheduled_channels)
-
-        if scheduled_channels:
-            report = generate_personal_message()
-
-            for channel_id in scheduled_channels:
-                channel = bot.get_channel(channel_id)
-                if channel:
-                    # Send the message
-                    await channel.send(report)
-
-
-        # for channel_id in scheduled_channels:
-        #     # Replace 'YOUR_CHANNEL_ID' with the actual channel ID where you want to send the message
-        #     channel = bot.get_channel("1153297683235209286")
-            
-        #     # Send the message
-        #     await channel.send('Hello!')
-            # Check if it's time to send the message (e.g., 9:00 AM)
-            # if now.hour == 9 and now.minute == 0:
-
-
+    
 
 @bot.event
 async def on_command_error(ctx, error):

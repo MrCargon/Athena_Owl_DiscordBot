@@ -1,5 +1,5 @@
 # Athena Owl Discord Artificial Intelligence Bot 🤖
-#### Your fledglings Robotic Owl Discord AI Companion!
+#### Your fledglings Robotic Owl Discord AI Companion !
 
 ## Features and commands 🌟
 
@@ -100,3 +100,4 @@ python main.py
 ### Step 8. 🔗 Invite the bot 
 You can Invite your bot using the link in console
 ![image](https://user-images.githubusercontent.com/91066601/236673317-64a1789c-f6b1-48d7-ba1b-dbb18e7d802a.png)
+
