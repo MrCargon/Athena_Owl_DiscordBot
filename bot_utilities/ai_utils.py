@@ -32,9 +32,9 @@ async def _mentioned_user_func(user, message):
   member = user.guild.get_member(user.id)
   if member:
     status = member.status
-    response = f"{member.display_name} status is: {status}"
+    response = f"{message} and member display name is : {member.display_name} Current Status Is: {status}"
   else:
-    response = "That user is not in the server."
+    response = f"{message} and member display name is : {member.display_name} Current Status Is: That user is not in the server."
   
   return response
   

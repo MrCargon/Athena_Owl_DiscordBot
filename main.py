@@ -125,8 +125,7 @@ async def on_message(message):
 
     if message.mentions:
         for mention in message.mentions:
-            status = await _mentioned_user_func(message.author, f"You were mentioned by {message.author} in {message.channel}")
-            await message.channel.send(status)
+            message.content = message.content + await _mentioned_user_func(mention, f" Discord user were mentioned by {message.author} in {message.channel}")
             message.content = message.content.replace(f'<@{mention.id}>', f'{mention.display_name}')
 
     if message.stickers or message.author.bot or (message.reference and (message.reference.resolved.author != bot.user or message.reference.resolved.embeds)):
@@ -165,7 +164,7 @@ async def on_message(message):
             message_history[key] = []
 
         message_history[key] = message_history[key][-MAX_HISTORY:]
-            
+
         search_results = await search(message.content)
             
         message_history[key].append({"role": "user", "content": message.content})
