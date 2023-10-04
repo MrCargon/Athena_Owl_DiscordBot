@@ -28,6 +28,7 @@ def sdxl(prompt):
 )
     return response['data'][0]["url"]
 
+
 async def _mentioned_user_func(user, message):
   member = user.guild.get_member(user.id)
   if member:
